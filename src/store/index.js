@@ -86,16 +86,10 @@ export default new Vuex.Store({
     },
     viewBoxToEdit(state, box) {
       state.type = box.type;
-      state.boxName = box.boxName;
+      state.managerName = box.boxName;
       state.managerName = box.managerName;
-      state.branch = box.branch;
-      state.primary = box.primary;
     },
   },
-  actions: {
-    viewBoxToEdit(context) {
-      context.commit("viewBoxToEdit");
-    },
-  },
+  actions: {},
   modules: {},
 });

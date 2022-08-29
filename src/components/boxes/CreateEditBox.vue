@@ -117,13 +117,13 @@ export default {
     setBranchToState() {
       return this.$store.getters.setBranchToState(this.branch);
     },
-  },
-  mounted() {
-    this.type = this.setTypeToState;
-    this.managerName = this.setManagerNameToState;
-    this.primary = this.setPrimaryToState;
-    this.branch = this.setBranchToState;
-    this.boxName = this.setBoxNameToState;
+    // newBoxDetails: function () {
+    //   return {
+    //     type: this.type,
+    //     boxName: this.boxName,
+    //     boxManagerName: this.managerName,
+    //   };
+    // },
   },
   name: "CreateEditBox",
 };
