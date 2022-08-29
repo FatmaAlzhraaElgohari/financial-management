@@ -140,7 +140,7 @@ export default {
       this.viewFilteredBoxes(this.selectedCategory);
     },
     viewBoxToEdit: function (box) {
-      this.store.commit("viewBoxToEdit", box);
+      this.$store.commit("viewBoxToEdit", box);
     },
     // viewFilteredBoxes: function () {
     //   this.$store.commit("viewFilteredBoxes", this.selectedCategory);
