@@ -96,6 +96,11 @@ export default {
   methods: {
     addBox: function () {
       this.$store.commit("addBox");
+      this.type = "";
+      this.managerName = "";
+      this.boxName = "";
+      this.branch = "";
+      this.primary = "";
     },
   },
   computed: {
@@ -117,13 +122,6 @@ export default {
     setBranchToState() {
       return this.$store.getters.setBranchToState(this.branch);
     },
-    // newBoxDetails: function () {
-    //   return {
-    //     type: this.type,
-    //     boxName: this.boxName,
-    //     boxManagerName: this.managerName,
-    //   };
-    // },
   },
   name: "CreateEditBox",
 };

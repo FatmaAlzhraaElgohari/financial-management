@@ -84,11 +84,6 @@ export default new Vuex.Store({
       });
       alert("تم اضافة الصندوق بنجاح");
     },
-    viewBoxToEdit(state, box) {
-      state.type = box.type;
-      state.managerName = box.boxName;
-      state.managerName = box.managerName;
-    },
   },
   actions: {},
   modules: {},
