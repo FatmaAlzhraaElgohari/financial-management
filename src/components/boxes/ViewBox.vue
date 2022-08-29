@@ -99,9 +99,16 @@
                   href="#"
                   class="btn btn-warning text-light rounded-pill me-1"
                 >
-                  <router-link to="/create-edit-box"> تعديل </router-link>
+                  <router-link
+                    to="/create-edit-box"
+                    @click="viewBoxToEdit(box)"
+                  >
+                    تعديل
+                  </router-link>
                 </a>
-                <a @click="deleteBox()" class="btn btn-danger rounded-pill me-1"
+                <a
+                  @click="deleteBox(box.boxName)"
+                  class="btn btn-danger rounded-pill me-1"
                   >حذف</a
                 >
               </div>
@@ -119,6 +126,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   data: function () {
     return {
@@ -126,12 +134,17 @@ export default {
     };
   },
   methods: {
-    deleteBox: function () {
-      this.$store.commit("deleteBox", "الصندوق الأول");
+    ...mapMutations(["viewFilteredBoxes"]),
+    deleteBox: function (boxName) {
+      this.$store.commit("deleteBox", boxName);
+      this.viewFilteredBoxes(this.selectedCategory);
     },
-    viewFilteredBoxes: function () {
-      this.$store.commit("viewFilteredBoxes", this.selectedCategory);
+    viewBoxToEdit: function (box) {
+      this.store.commit("viewBoxToEdit", box);
     },
+    // viewFilteredBoxes: function () {
+    //   this.$store.commit("viewFilteredBoxes", this.selectedCategory);
+    // },
   },
   watch: {
     selectedCategory: function (v) {

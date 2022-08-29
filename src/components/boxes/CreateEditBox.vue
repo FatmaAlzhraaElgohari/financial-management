@@ -95,20 +95,35 @@ export default {
   },
   methods: {
     addBox: function () {
-      this.$store.commit("addBox", this.newBoxDetails);
+      this.$store.commit("addBox");
     },
   },
   computed: {
     boxes() {
       return this.$store.state.boxes;
     },
-    newBoxDetails: function () {
-      return {
-        type: this.type,
-        boxName: this.boxName,
-        boxManagerName: this.managerName,
-      };
+    setTypeToState() {
+      return this.$store.getters.setTypeToState(this.type);
     },
+    setBoxNameToState() {
+      return this.$store.getters.setBoxNameToState(this.boxName);
+    },
+    setManagerNameToState() {
+      return this.$store.getters.setManagerNameToState(this.managerName);
+    },
+    setPrimaryToState() {
+      return this.$store.getters.setPrimaryToState(this.primary);
+    },
+    setBranchToState() {
+      return this.$store.getters.setBranchToState(this.branch);
+    },
+  },
+  mounted() {
+    this.type = this.setTypeToState;
+    this.managerName = this.setManagerNameToState;
+    this.primary = this.setPrimaryToState;
+    this.branch = this.setBranchToState;
+    this.boxName = this.setBoxNameToState;
   },
   name: "CreateEditBox",
 };

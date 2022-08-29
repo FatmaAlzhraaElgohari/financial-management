@@ -32,8 +32,34 @@ export default new Vuex.Store({
       },
     ],
     filteredBoxes: [],
+    type: "",
+    boxName: "",
+    primary: "",
+    managerName: "",
+    branch: "",
   }),
-  getters: {},
+  getters: {
+    setTypeToState: (state) => (typeFromComponent) => {
+      state.type = typeFromComponent;
+      return state.type;
+    },
+    setBoxNameToState: (state) => (boxNameFromComponent) => {
+      state.boxName = boxNameFromComponent;
+      return state.boxName;
+    },
+    setManagerNameToState: (state) => (managerNameFromComponent) => {
+      state.managerName = managerNameFromComponent;
+      return state.managerName;
+    },
+    setPrimaryToState: (state) => (primaryFromComponent) => {
+      state.primary = primaryFromComponent;
+      return state.primary;
+    },
+    setBranchToState: (state) => (branchFromComponent) => {
+      state.branch = branchFromComponent;
+      return state.branch;
+    },
+  },
   mutations: {
     deleteBox: (state, val) => {
       var result = confirm("هل ترغب بإتمام عملية الحذف؟");
@@ -49,16 +75,27 @@ export default new Vuex.Store({
         } else return el.type === val;
       });
     },
-    addBox(state, data) {
+    addBox(state) {
       state.boxes.push({
-        type: data.type === "صندوق" ? "box" : "bank account",
-        boxName: data.boxName,
-        managerName: data.boxManagerName,
-        typeOfBox: data.type,
+        type: state.type === "صندوق" ? "box" : "bank account",
+        boxName: state.boxName,
+        managerName: state.managerName,
+        typeOfBox: state.type,
       });
       alert("تم اضافة الصندوق بنجاح");
     },
+    viewBoxToEdit(state, box) {
+      state.type = box.type;
+      state.boxName = box.boxName;
+      state.managerName = box.managerName;
+      state.branch = box.branch;
+      state.primary = box.primary;
+    },
   },
-  actions: {},
+  actions: {
+    viewBoxToEdit(context) {
+      context.commit("viewBoxToEdit");
+    },
+  },
   modules: {},
 });
