@@ -108,7 +108,6 @@ export default {
     },
     addBox: function () {
       this.$store.commit("addBox", this.formBoxData);
-      this.$store.commit("setCurrentBoxData", this.formBoxData);
       this.clearFormBoxData();
     },
   },

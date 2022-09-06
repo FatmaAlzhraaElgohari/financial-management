@@ -33,7 +33,13 @@ export default new Vuex.Store({
     ],
     filteredBoxes: [],
     currentBox: {
-      type: "",
+      _type: "",
+      get type() {
+        return this._type;
+      },
+      set type(value) {
+        this._type = value;
+      },
       managerName: "",
       boxName: "",
       branch: "",
