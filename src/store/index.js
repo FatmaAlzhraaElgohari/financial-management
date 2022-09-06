@@ -9,55 +9,58 @@ export default new Vuex.Store({
       {
         type: "box",
         boxName: "الصندوق الأول",
-        managerName: " محمد إبراهيم علي",
+        managerName: "فهد بن عبدالله القحطاني",
         typeOfBox: "صندوق",
       },
       {
         type: "bank account",
         boxName: "الحساب الأول",
-        managerName: "أحمد محمد القحطاني",
+        managerName: "محمد بن عبدالله العتيبي",
         typeOfBox: "حساب بنكي",
       },
       {
         type: "bank account",
         boxName: "الحساب الثاني",
-        managerName: " محمد القحطاني",
+        managerName: "فهد بن عبدالله القحطاني",
         typeOfBox: "حساب بنكي",
       },
       {
         type: "box",
         boxName: "الصندوق الثاني",
-        managerName: " محمد اسماعيل الرويني",
+        managerName: "محمد بن عبدالله العتيبي",
         typeOfBox: "صندوق",
       },
     ],
     filteredBoxes: [],
-    type: "",
-    boxName: "",
-    primary: "",
-    managerName: "",
-    branch: "",
+    currentBox: {
+      type: "",
+      managerName: "",
+      boxName: "",
+      branch: "",
+      primary: "",
+    },
+    selectedCategory: "all",
+    NameOfBoxToEdit: "",
   }),
   getters: {
-    setTypeToState: (state) => (typeFromComponent) => {
-      state.type = typeFromComponent;
-      return state.type;
+    viewFilteredBoxes(state) {
+      state.filteredBoxes = state.boxes.filter(function (el) {
+        if (state.selectedCategory === "all") {
+          return el.type === "box" || el.type === "bank account";
+        } else return el.type === state.selectedCategory;
+      });
     },
-    setBoxNameToState: (state) => (boxNameFromComponent) => {
-      state.boxName = boxNameFromComponent;
-      return state.boxName;
+    getFilteredboxes(state) {
+      return state.filteredBoxes;
     },
-    setManagerNameToState: (state) => (managerNameFromComponent) => {
-      state.managerName = managerNameFromComponent;
-      return state.managerName;
+    getselectedCategory(state) {
+      return state.selectedCategory;
     },
-    setPrimaryToState: (state) => (primaryFromComponent) => {
-      state.primary = primaryFromComponent;
-      return state.primary;
+    getNameOfBoxToEdit(state) {
+      return state.NameOfBoxToEdit;
     },
-    setBranchToState: (state) => (branchFromComponent) => {
-      state.branch = branchFromComponent;
-      return state.branch;
+    getCurrentBoxData(state) {
+      return state.currentBox;
     },
   },
   mutations: {
@@ -65,24 +68,48 @@ export default new Vuex.Store({
       var result = confirm("هل ترغب بإتمام عملية الحذف؟");
       if (result) {
         state.boxes = state.boxes.filter((el) => el.boxName !== val);
-        alert("تم الحذف");
       }
     },
-    viewFilteredBoxes: (state, val) => {
-      state.filteredBoxes = state.boxes.filter(function (el) {
-        if (val === "all" || val === "") {
-          return el.type === "box" || el.type === "bank account";
-        } else return el.type === val;
-      });
-    },
-    addBox(state) {
+    addBox: (state, val) => {
       state.boxes.push({
-        type: state.type === "صندوق" ? "box" : "bank account",
-        boxName: state.boxName,
-        managerName: state.managerName,
-        typeOfBox: state.type,
+        type: val.type === "صندوق" ? "box" : "bank account",
+        boxName: val.boxName,
+        managerName: val.managerName,
+        typeOfBox: val.type,
       });
       alert("تم اضافة الصندوق بنجاح");
+    },
+    clearCurrentBoxData(state) {
+      (state.currentBox.type = ""),
+        (state.currentBox.managerName = ""),
+        (state.currentBox.branch = ""),
+        (state.currentBox.primary = ""),
+        (state.currentBox.boxName = "");
+    },
+    setCurrentBoxData(state, val) {
+      const index = state.boxes.findIndex((box) => box.boxName == val);
+      (state.currentBox.type = state.boxes[index].type),
+        (state.currentBox.managerName = state.boxes[index].managerName),
+        (state.currentBox.branch = state.boxes[index].branch),
+        (state.currentBox.primary = state.boxes[index].primary),
+        (state.currentBox.boxName = state.boxes[index].boxName);
+    },
+    setSelectedCategory(state, val) {
+      state.selectedCategory = val;
+    },
+    setNameOfBoxToEdit(state, val) {
+      state.NameOfBoxToEdit = val;
+    },
+    editBox(state, value) {
+      const index = state.boxes.findIndex(
+        (box) => box.boxName === state.getNameOfBoxToEdit
+      );
+      (state.boxes[index].type =
+        value.type === "صندوق" ? "box" : "bank account"),
+        (state.boxes[index].managerName = value.managerName),
+        (state.boxes[index].branch = value.branch),
+        (state.boxes[index].primary = value.primary),
+        (state.boxes[index].boxName = value.boxName);
     },
   },
   actions: {},

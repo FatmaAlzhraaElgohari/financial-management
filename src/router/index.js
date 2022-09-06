@@ -2,7 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import FinancialBoxesView from "../views/FinancialBoxes.vue";
-import CreateEditView from "../views/CreateEdit.vue";
+import CreateView from "../views/Create.vue";
+import EditView from "../views/Edit.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -12,9 +13,9 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/create-edit-box",
-    name: "create-edit-box",
-    component: CreateEditView,
+    path: "/create-box",
+    name: "create-box",
+    component: CreateView,
   },
   {
     path: "/financialBoxes",
@@ -25,6 +26,11 @@ const routes = [
     path: "/view-box",
     name: "view-box",
     component: FinancialBoxesView,
+  },
+  {
+    path: "/edit-box",
+    name: "edit-box",
+    component: EditView,
   },
   {
     path: "/about",

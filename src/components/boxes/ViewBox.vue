@@ -45,7 +45,7 @@
         <div class="row">
           <div
             class="col-lg-4 col-md-6 col-sm-12"
-            v-for="box in filteredBoxes"
+            v-for="box in getFilteredboxes"
             :key="box.id"
           >
             <div class="box p-2 pt-4 mt-3 mb-2 border-top border-danger">
@@ -98,13 +98,11 @@
                 <a
                   href="#"
                   class="btn btn-warning text-light rounded-pill me-1"
+                  @click="editBox(box.boxName)"
                 >
-                  <router-link
-                    to="/create-edit-box"
-                    @click="viewBoxToEdit(box)"
-                  >
-                    تعديل
-                  </router-link>
+                  <!-- <router-link to="/edit-box"> -->
+                  تعديل
+                  <!-- </router-link> -->
                 </a>
                 <a
                   @click="deleteBox(box.boxName)"
@@ -118,7 +116,7 @@
       </div>
       <div class="addBox">
         <a class="btn btn-primary mt-4 mb-5 p-2">
-          <router-link to="/create-edit-box"> إضافة صندوق </router-link>
+          <router-link to="/create-box"> إضافة صندوق </router-link>
         </a>
       </div>
     </div>
@@ -126,40 +124,41 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+// import { mapMutations } from "vuex";
 export default {
   data: function () {
     return {
-      selectedCategory: "all",
+      selectedCategory: "",
     };
   },
   methods: {
-    ...mapMutations(["viewFilteredBoxes"]),
+    // ...mapMutations(["setSelectedCategory", "setNameOfBoxToEdit"]),
     deleteBox: function (boxName) {
       this.$store.commit("deleteBox", boxName);
-      this.viewFilteredBoxes(this.selectedCategory);
+      this.$store.getters.viewFilteredBoxes;
+      alert("تم الحذف");
     },
-    viewBoxToEdit: function (box) {
-      this.$store.commit("viewBoxToEdit", box);
+    editBox: function (boxName) {
+      this.$store.commit("setNameOfBoxToEdit", boxName);
+      this.$store.commit("setCurrentBoxData", boxName);
     },
-    // viewFilteredBoxes: function () {
-    //   this.$store.commit("viewFilteredBoxes", this.selectedCategory);
-    // },
   },
   watch: {
     selectedCategory: function (v) {
-      this.viewFilteredBoxes(v);
+      this.$store.commit("setSelectedCategory", v);
+      this.$store.getters.viewFilteredBoxes;
     },
   },
   mounted() {
-    this.viewFilteredBoxes(this.selectedCategory);
+    this.selectedCategory = this.getselectedCategory;
+    this.$store.getters.viewFilteredBoxes;
   },
   computed: {
-    boxes() {
-      return this.$store.state.boxes;
+    getFilteredboxes() {
+      return this.$store.getters.getFilteredboxes;
     },
-    filteredBoxes() {
-      return this.$store.state.filteredBoxes;
+    getselectedCategory() {
+      return this.$store.getters.getselectedCategory;
     },
   },
   name: "ViewBox",

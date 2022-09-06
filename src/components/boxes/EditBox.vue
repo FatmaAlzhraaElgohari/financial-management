@@ -1,12 +1,12 @@
 <template>
-  <div class="create-edit">
+  <div class="edit">
     <div class="container">
       <h2 class="mt-5 me-5">اضافة صندوق</h2>
       <form class="w-75 m-auto mt-3 mb-5 border border-warning p-4">
         <div class="form-group row mb-4">
           <label for="box-type" class="col-sm-2 col-form-label">النوع</label>
           <div class="col-sm-10">
-            <select class="col-sm-10 form-control" v-model="type">
+            <select class="col-sm-10 form-control" v-model="formBoxData.type">
               <option>صندوق</option>
               <option>حساب بنكي</option>
             </select>
@@ -20,7 +20,7 @@
               class="form-control mb-3"
               id="box-name"
               placeholder="اسم الصندوق"
-              v-model="boxName"
+              v-model="formBoxData.boxName"
             />
           </div>
 
@@ -31,7 +31,7 @@
                 type="checkbox"
                 value="true"
                 id="defaultCheck1"
-                v-model="primary"
+                v-model="formBoxData.primary"
               />
               <label class="form-check-label" for="defaultCheck1">
                 صندوق رئيسي
@@ -44,14 +44,17 @@
             >المدير المسؤول</label
           >
           <div class="col-sm-4 mb-3">
-            <select class="col-sm-10 form-control" v-model="managerName">
+            <select
+              class="col-sm-10 form-control"
+              v-model="formBoxData.managerName"
+            >
               <option>فهد بن عبدالله القحطاني</option>
               <option>محمد بن عبدالله العتيبي</option>
             </select>
           </div>
           <label for="box-type" class="col-sm-2 col-form-label"> الفرع</label>
           <div class="col-sm-4">
-            <select class="col-sm-10 form-control" v-model="branch">
+            <select class="col-sm-10 form-control" v-model="formBoxData.branch">
               <option>فرع الشمال</option>
               <option>فرع الجنوب</option>
               <option>فرع وسط الرياض</option>
@@ -74,7 +77,9 @@
             <a type="button" class="btn btn-warning ms-5 pr-3 pl-3">
               <router-link to="/financialBoxes"> تراجع</router-link>
             </a>
-            <a type="submit" @click="addBox()" class="btn btn-primary">حفظ</a>
+            <a type="submit" @click="editBox()" class="btn btn-primary"
+              >تعديل</a
+            >
           </div>
         </div>
       </form>
@@ -86,49 +91,48 @@
 export default {
   data: function () {
     return {
-      type: "",
-      boxName: "",
-      primary: "",
-      managerName: "",
-      branch: "",
+      formBoxData: {
+        type: "",
+        boxName: "",
+        primary: "",
+        managerName: "",
+        branch: "",
+      },
+      NameOfBoxToEdit: "",
     };
   },
   methods: {
-    addBox: function () {
-      this.$store.commit("addBox");
-      this.type = "";
-      this.managerName = "";
-      this.boxName = "";
-      this.branch = "";
-      this.primary = "";
+    clearFormBoxData: function () {
+      (this.formBoxData.type = ""),
+        (this.formBoxData.boxName = ""),
+        (this.formBoxData.primary = ""),
+        (this.formBoxData.branch = ""),
+        (this.formBoxData.managerName = "");
+    },
+    editBox: function () {
+      this.$store.commit("editBox", this.formBoxData);
+      this.clearFormBoxData();
+      this.$store.commit("clearCurrentBoxData");
     },
   },
-  computed: {
-    boxes() {
-      return this.$store.state.boxes;
-    },
-    setTypeToState() {
-      return this.$store.getters.setTypeToState(this.type);
-    },
-    setBoxNameToState() {
-      return this.$store.getters.setBoxNameToState(this.boxName);
-    },
-    setManagerNameToState() {
-      return this.$store.getters.setManagerNameToState(this.managerName);
-    },
-    setPrimaryToState() {
-      return this.$store.getters.setPrimaryToState(this.primary);
-    },
-    setBranchToState() {
-      return this.$store.getters.setBranchToState(this.branch);
-    },
+  computed: {},
+  mounted() {
+    this.formBoxData.type =
+      this.$store.getters.getCurrentBoxData.type === "box"
+        ? "صندوق"
+        : "حساب بنكي";
+    this.formBoxData.boxName = this.$store.getters.getCurrentBoxData.boxName;
+    this.formBoxData.managerName =
+      this.$store.getters.getCurrentBoxData.managerName;
+    this.formBoxData.branch = this.$store.getters.getCurrentBoxData.branch;
+    this.NameOfBoxToEdit = this.$store.getters.getNameOfBoxToEdit;
   },
-  name: "CreateEditBox",
+  name: "EditBox",
 };
 </script>
 
 <style>
-.create-edit {
+.edit {
   direction: rtl;
   text-align: right;
 }
